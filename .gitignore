@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+.env
+backend/output/
+*.db
+*.sqlite3
+
+# Node
+node_modules/
+.next/
+out/
+npm-debug.log*
+
+# Test artifacts
+*.zip
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
