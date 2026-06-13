@@ -1,0 +1,29 @@
+v0.3 阶段 1 重建报告
+====================
+时间: 2026-06-13
+目录: C:\Users\12834\Documents\ai-urban-novel-tts
+
+恢复来源
+--------
+Cursor agent transcript → tools/recover_from_transcript.py
+共恢复 60 个文件（backend + frontend + scripts）
+
+阶段 1 检查
+-----------
+[OK] backend/main.py 可 import
+[OK] GET /api/health → {"status":"ok"}
+[OK] frontend npm install 完成
+[OK] scripts/run_v03_language_smoke.ps1 已恢复
+[OK] scripts/run_v03_language_3ch.ps1 已恢复
+[OK] scripts/run_v03_full_work_test.ps1 已恢复
+[OK] backend/tts_text_cleaner.py 已补全
+[PEND] backend/.env 仍为占位 Key，需用户填入后跑冒烟测试
+
+下一步
+------
+1. 编辑 backend/.env 填入 DEEPSEEK_API_KEY
+2. powershell -File scripts\run_v03_language_smoke.ps1
+3. git push 到 GitHub 私有仓
+4. 定期 robocopy 备份到 Documents\ai-urban-novel-tts-backup-日期
+
+Overall: PHASE1 CODE RESTORED — 待 API Key 冒烟验收

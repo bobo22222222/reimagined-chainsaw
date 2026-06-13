@@ -68,11 +68,18 @@ function Read-EnvKey {
 function Test-DeepSeekKeyConfigured {
     param([string]$Value)
     if (-not $Value) { return $false }
-    $placeholders = @("你的_deepseek_api_key", "your_deepseek_api_key", "sk-xxx", "changeme", "placeholder")
+    $placeholders = @(
+        "你的_deepseek_api_key",
+        "your_deepseek_api_key",
+        "sk-xxx",
+        "changeme",
+        "placeholder"
+    )
     foreach ($p in $placeholders) {
         if ($Value -eq $p) { return $false }
     }
-    return ($Value.Length -ge 8)
+    if ($Value.Length -lt 8) { return $false }
+    return $true
 }
 
 $Root = Resolve-ProjectRoot
@@ -89,6 +96,7 @@ $Backend = Join-Path $Root "backend"
 $Frontend = Join-Path $Root "frontend"
 $EnvFile = Join-Path $Backend ".env"
 
+# --- backend/.env ---
 if (-not (Test-Path $EnvFile)) {
     Write-Fail "backend/.env not found"
     Write-Fix "Copy backend/.env.example to backend/.env and fill DEEPSEEK_API_KEY"
@@ -104,10 +112,15 @@ if (-not (Test-DeepSeekKeyConfigured -Value $apiKey)) {
 }
 Write-Ok "DEEPSEEK_API_KEY configured"
 
+# --- dependencies (check only, do not auto-install) ---
 Push-Location $Backend
-python -m pip show fastapi 2>$null | Out-Null
-$pipOk = ($LASTEXITCODE -eq 0)
+$pipOk = $false
+try {
+    python -m pip show fastapi 2>$null | Out-Null
+    $pipOk = ($LASTEXITCODE -eq 0)
+} catch { $pipOk = $false }
 Pop-Location
+
 if (-not $pipOk) {
     Write-Fail "Backend dependencies missing (fastapi not found)"
     Write-Fix "cd backend; pip install -r requirements.txt"
@@ -122,6 +135,7 @@ if (-not (Test-Path (Join-Path $Frontend "node_modules"))) {
 }
 Write-Ok "Frontend dependencies found"
 
+# --- port checks ---
 $backendAlreadyRunning = $false
 if (Test-PortListening -Port 8000) {
     if (Test-BackendHealth) {
@@ -129,7 +143,7 @@ if (Test-PortListening -Port 8000) {
         $backendAlreadyRunning = $true
     } else {
         Write-Fail "Port 8000 is in use but /api/health is not OK"
-        Write-Fix "Run scripts\stop_app.ps1 or close the process on port 8000, then retry"
+        Write-Fix "Close the process using port 8000, then retry"
         exit 1
     }
 } else {
@@ -143,6 +157,7 @@ if ($frontendPortBusy) {
     Write-Ok "Port 3000 available"
 }
 
+# --- start backend ---
 if (-not $backendAlreadyRunning) {
     Write-Info "Starting backend..."
     $backendCmd = "`$host.UI.RawUI.WindowTitle='AI Novel Backend'; Set-Location '$Backend'; python main.py"
@@ -152,7 +167,10 @@ if (-not $backendAlreadyRunning) {
     $healthOk = $false
     $deadline = (Get-Date).AddSeconds(30)
     while ((Get-Date) -lt $deadline) {
-        if (Test-BackendHealth) { $healthOk = $true; break }
+        if (Test-BackendHealth) {
+            $healthOk = $true
+            break
+        }
         Start-Sleep -Seconds 1
     }
     if (-not $healthOk) {
@@ -165,6 +183,7 @@ if (-not $backendAlreadyRunning) {
     Write-Ok "Backend health check passed (existing instance)"
 }
 
+# --- start frontend ---
 if (-not $frontendPortBusy) {
     Write-Info "Starting frontend..."
     $frontendCmd = "`$host.UI.RawUI.WindowTitle='AI Novel Frontend'; Set-Location '$Frontend'; npm run dev"

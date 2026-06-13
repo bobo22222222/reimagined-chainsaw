@@ -1,0 +1,23 @@
+Transcript recovery report
+Transcript: C:\Users\12834\.cursor\projects\C-Users-12834-AppData-Local-Temp-186c1159-84bb-4c0b-8628-b380a9c64111-ai-urban-novel-tts\agent-transcripts\d7b56ce2-8f06-46d6-9c27-48ff10a6a006\d7b56ce2-8f06-46d6-9c27-48ff10a6a006.jsonl
+Files recovered: 60
+
+  backend/.env
+  backend/.env.example
+  backend/content_utils.py
+  backend/database.py
+  backend/deepseek_client.py
+  backend/exporter.py
+  backend/language_profiles.py
+  backend/main.py
+  backend/models.py
+  backend/outline_utils.py
+  backend/output/.gitkeep
+  backend/prompts.py
+  backend/quality_service.py
+  backend/requirements.txt
+  backend/subtitle_service.py
+  backend/tts_cleaner_selftest.py
+  backend/tts_service.py
+  backend/tts_text_cleaner.py
+  backend/validators.py

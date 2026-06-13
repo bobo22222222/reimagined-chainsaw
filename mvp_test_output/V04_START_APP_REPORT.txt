@@ -1,0 +1,40 @@
+v0.4 Start App Validation Report
+================================
+Test time: 2026-06-13 19:50:00
+Project path: C:\Users\12834\AppData\Local\Temp\186c1159-84bb-4c0b-8628-b380a9c64111\ai-urban-novel-tts
+
+Overall: FAIL (project files missing on disk)
+
+Disk inventory
+--------------
+Files found: 2 (scripts/start_app.ps1, scripts/stop_app.ps1)
+Missing: backend/main.py, frontend/, README.md, .git/, mvp_test_output/, etc.
+v0.3 backup folder: NOT FOUND (ai-urban-novel-tts-v0.3-backup-20260613-143854)
+
+stop_app.ps1 executed: YES
+8000 TCP old process cleared: YES (no TCP listener before/after)
+3000 TCP old process cleared: YES (no TCP listener)
+
+start_app.ps1 executed: NO (blocked — project root requires backend/, frontend/, README.md)
+/api/health verified: NO (no backend code to start)
+Frontend started: NO
+Browser opened: NO
+Browser URL: http://localhost:3000 (not reached)
+
+Port conflict at test time: none (TCP 8000/3000 free; UDP :8000 entries are unrelated)
+
+Recovery required
+-----------------
+1. Restore full project from your v0.3 backup or git branch v0.4-product-polish (commit 4ba4fbe+)
+2. Ensure backend/main.py includes GET /api/health
+3. Re-run:
+   powershell -ExecutionPolicy Bypass -File scripts\stop_app.ps1
+   powershell -ExecutionPolicy Bypass -File scripts\start_app.ps1
+4. Then commit:
+   git add scripts/start_app.ps1 scripts/stop_app.ps1 backend/main.py README.md CHANGELOG.md mvp_test_output/V04_START_APP_REPORT.txt
+   git commit -m "feat: add one-click app launcher"
+
+Scripts status (preserved on disk)
+----------------------------------
+start_app.ps1: present, ready
+stop_app.ps1: present, ready (fixed $pid reserved variable conflict)
