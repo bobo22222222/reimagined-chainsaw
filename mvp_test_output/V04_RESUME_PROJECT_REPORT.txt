@@ -1,0 +1,31 @@
+v0.4 Resume Project Report
+==========================
+Started: 2026-06-15 21:37:19
+Project ID: 32
+Project title: V04 Resume Fixture
+Chapter range: 1-3
+Voice: zh_male
+Quality threshold: 70
+
+Text:
+  generated: -
+  skipped: -
+  failed: -
+Quality:
+  checked: 2
+  skipped: 1,3
+  failed: -
+Rewrite:
+  rewritten: -
+  skipped: -
+  failed: -
+TTS:
+  generated: 1,2
+  skipped: 3
+  failed: -
+ZIP:
+  path: C:\Users\12834\Documents\Codex\2026-06-13\ai-tts-1-2-readme-md\work\reimagined-chainsaw\mvp_test_output\v04_resume_project_32_zh_full.zip
+  bytes: 54623
+
+Finished: 2026-06-15 21:37:25
+Overall: PASS

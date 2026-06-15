@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.4-product-polish - 产品化补强（进行中）
+
+- 一键启动脚本增强：规范化 `backend/.env` 编码，使用无 reload 后端启动，并增强停止脚本进程识别。
+- TTS 清洗复测自包含化：新增 `tts_cleaner_selftest.py`，验证清洗不修改数据库正文且 MP3 可生成。
+- 新增 `scripts/resume_project.ps1`：支持按章节范围续跑正文、质量检查、低分重写、TTS 与 ZIP 导出。
+
 ## v0.3-rebuild - 从 transcript 恢复（2026-06-13）
 
 ### 恢复方式

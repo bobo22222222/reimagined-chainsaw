@@ -46,4 +46,20 @@ powershell -ExecutionPolicy Bypass -File scripts\run_v03_language_3ch.ps1
 powershell -ExecutionPolicy Bypass -File scripts\run_v03_full_work_test.ps1
 ```
 
+## v0.4 产品化脚本
+
+断点续跑指定项目：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\resume_project.ps1 -ProjectId 49 -FromChapter 1 -ToChapter 10 -DoText -DoQuality -DoRewrite -DoTts -DoExport
+```
+
+常用场景：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\resume_project.ps1 -ProjectId 49 -FromChapter 1 -ToChapter 10 -DoTts -DoExport
+```
+
+续跑会跳过已有正文、已完成评分和已存在 MP3 的章节；失败、缺评分、缺 MP3 的章节会按所选阶段重试。
+
 恢复说明见 [REBUILD.md](./REBUILD.md)。
