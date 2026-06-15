@@ -6,6 +6,7 @@ function Write-Ok { param([string]$Msg) Write-Host "[OK] $Msg" -ForegroundColor 
 function Write-Fail { param([string]$Msg) Write-Host "[FAIL] $Msg" -ForegroundColor Red }
 function Write-Fix { param([string]$Msg) Write-Host "[FIX] $Msg" -ForegroundColor Yellow }
 function Write-Info { param([string]$Msg) Write-Host "[..] $Msg" -ForegroundColor Cyan }
+function Write-Warn { param([string]$Msg) Write-Host "[WARN] $Msg" -ForegroundColor Yellow }
 
 function Resolve-ProjectRoot {
     $candidates = @()
@@ -65,6 +66,33 @@ function Read-EnvKey {
     return ""
 }
 
+function Normalize-EnvEncoding {
+    param([string]$EnvPath)
+    if (-not (Test-Path $EnvPath)) { return }
+
+    $bytes = [System.IO.File]::ReadAllBytes($EnvPath)
+    if ($bytes.Length -lt 2) { return }
+
+    $text = $null
+    $needsRewrite = $false
+    if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) {
+        $text = [System.Text.Encoding]::UTF8.GetString($bytes, 3, $bytes.Length - 3)
+        $needsRewrite = $true
+    } elseif ($bytes[0] -eq 0xFF -and $bytes[1] -eq 0xFE) {
+        $text = [System.Text.Encoding]::Unicode.GetString($bytes, 2, $bytes.Length - 2)
+        $needsRewrite = $true
+    } elseif ($bytes[0] -eq 0xFE -and $bytes[1] -eq 0xFF) {
+        $text = [System.Text.Encoding]::BigEndianUnicode.GetString($bytes, 2, $bytes.Length - 2)
+        $needsRewrite = $true
+    }
+
+    if ($needsRewrite) {
+        $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+        [System.IO.File]::WriteAllText($EnvPath, $text, $utf8NoBom)
+        Write-Warn "Normalized backend/.env encoding to UTF-8 without BOM"
+    }
+}
+
 function Test-DeepSeekKeyConfigured {
     param([string]$Value)
     if (-not $Value) { return $false }
@@ -103,6 +131,8 @@ if (-not (Test-Path $EnvFile)) {
     exit 1
 }
 Write-Ok "backend/.env found"
+
+Normalize-EnvEncoding -EnvPath $EnvFile
 
 $apiKey = Read-EnvKey -EnvPath $EnvFile -Key "DEEPSEEK_API_KEY"
 if (-not (Test-DeepSeekKeyConfigured -Value $apiKey)) {
@@ -160,7 +190,7 @@ if ($frontendPortBusy) {
 # --- start backend ---
 if (-not $backendAlreadyRunning) {
     Write-Info "Starting backend..."
-    $backendCmd = "`$host.UI.RawUI.WindowTitle='AI Novel Backend'; Set-Location '$Backend'; python main.py"
+    $backendCmd = "`$host.UI.RawUI.WindowTitle='AI Novel Backend'; Set-Location '$Backend'; python -m uvicorn main:app --host 0.0.0.0 --port 8000"
     Start-Process powershell -ArgumentList "-NoExit", "-Command", $backendCmd | Out-Null
     Write-Ok "Backend started (new window: AI Novel Backend)"
 

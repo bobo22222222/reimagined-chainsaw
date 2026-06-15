@@ -34,11 +34,11 @@ if (-not $Root) {
 
 $stopped = @()
 
-# Backend: python main.py
+# Backend: python main.py or python -m uvicorn main:app
 Get-CimInstance Win32_Process -Filter "Name='python.exe'" -ErrorAction SilentlyContinue | ForEach-Object {
     $cmd = $_.CommandLine
     if (-not $cmd) { return }
-    if ($cmd -match "main\.py") {
+    if ($cmd -match "main\.py" -or $cmd -match "uvicorn\s+main:app") {
         Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue
         $stopped += "backend pid=$($_.ProcessId)"
     }
@@ -52,7 +52,7 @@ foreach ($port in @(8000, 3000)) {
         if (-not $proc) { return }
         $name = $proc.Name
         $cmd = $proc.CommandLine
-        if ($name -in @("python.exe", "node.exe") -and $cmd -match "main\.py|next") {
+        if ($name -in @("python.exe", "node.exe") -and $cmd -match "main\.py|uvicorn\s+main:app|next") {
             Stop-Process -Id $owningPid -Force -ErrorAction SilentlyContinue
             $stopped += "port-$port pid=$owningPid"
         }
