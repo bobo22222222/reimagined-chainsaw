@@ -1,10 +1,10 @@
 v0.4 TTS Text Cleaner Report
 ============================
-Started: 2026-06-15 21:20:34
+Started: 2026-06-15 21:45:03
 
 Unit tests: PASS (zh/en/es/ja + zh PPT abbreviation)
 
-Fixture sample: zh project_31 chapter_1 (id=64)
+Fixture sample: zh project_33 chapter_1 (id=68)
   raw_len=109 clean_len=91
   markdown_removed=True forbid_hits=
 
@@ -28,8 +28,8 @@ C E O 把 U S B 放到桌上。
 秘书补了一句：“P P T 里的预算别再写成 大概，董事会要数字。”
 
 Content preserved in DB: True
-MP3 regenerated: True path=C:\Users\12834\Documents\Codex\2026-06-13\ai-tts-1-2-readme-md\work\reimagined-chainsaw\backend\output\project_31\chapter_001.mp3
+MP3 regenerated: True path=C:\Users\12834\Documents\Codex\2026-06-13\ai-tts-1-2-readme-md\work\reimagined-chainsaw\backend\output\project_33\chapter_001.mp3
 TTS status: completed
 
-Finished: 2026-06-15 21:20:36
+Finished: 2026-06-15 21:45:06
 Overall: PASS
