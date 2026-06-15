@@ -30,36 +30,37 @@ finally {
 Add-Line "Unit tests: PASS (zh/en/es/ja + zh PPT abbreviation)"
 Add-Line ""
 
-# --- 2. Real chapter sample: project 49 ch8 ---
+# --- 2. Self-contained fixture chapter with markdown residue ---
 Push-Location $BackendDir
 try {
-    $ch8Json = python tts_cleaner_selftest.py ch8 2>&1
-    if ($LASTEXITCODE -ne 0) { throw "ch8 sample failed: $ch8Json" }
+    $fixtureJson = python tts_cleaner_selftest.py fixture 2>&1
+    if ($LASTEXITCODE -ne 0) { throw "fixture creation failed: $fixtureJson" }
 }
 finally {
     Pop-Location
 }
 
-$ch8 = ($ch8Json | Out-String).Trim() | ConvertFrom-Json
-Add-Line "Regression sample: zh project_49 chapter_8 (id=$($ch8.chapter_id))"
-Add-Line "  raw_len=$($ch8.raw_len) clean_len=$($ch8.clean_len)"
-Add-Line "  markdown_removed=$($ch8.markdown_removed) forbid_hits=$($ch8.forbid_hits -join ',')"
+$fixture = ($fixtureJson | Out-String).Trim() | ConvertFrom-Json
+Add-Line "Fixture sample: zh project_$($fixture.project_id) chapter_1 (id=$($fixture.chapter_id))"
+Add-Line "  raw_len=$($fixture.raw_len) clean_len=$($fixture.clean_len)"
+Add-Line "  markdown_removed=$($fixture.markdown_removed) forbid_hits=$($fixture.forbid_hits -join ',')"
 Add-Line ""
 Add-Line "Before clean sample:"
-Add-Line $ch8.raw_sample
+Add-Line $fixture.raw_sample
 Add-Line ""
 Add-Line "After clean sample:"
-Add-Line $ch8.clean_sample
+Add-Line $fixture.clean_sample
 Add-Line ""
 
-if ($ch8.forbid_hits.Count -gt 0) { throw "Markdown residue in ch8 cleaned text: $($ch8.forbid_hits)" }
+if ($fixture.forbid_hits.Count -gt 0) { throw "Markdown residue in cleaned text: $($fixture.forbid_hits)" }
 
 # --- 3. Preserve DB content + regenerate MP3 ---
-$chs = Get-ChapterList -ProjectId 49
-$ch8Row = $chs | Where-Object { [int]$_.chapter_number -eq 8 } | Select-Object -First 1
-if (-not $ch8Row) { throw "project 49 chapter 8 not found" }
-$contentBefore = Get-ChapterContentText $ch8Row
-$chapterId = [int]$ch8Row.id
+$projectId = [int]$fixture.project_id
+$chapterId = [int]$fixture.chapter_id
+$chs = Get-ChapterList -ProjectId $projectId
+$chapterRow = $chs | Where-Object { [int]$_.id -eq $chapterId } | Select-Object -First 1
+if (-not $chapterRow) { throw "fixture chapter not found" }
+$contentBefore = Get-ChapterContentText $chapterRow
 
 $tts = Invoke-Api -Method POST -Path "/api/chapters/$chapterId/tts" -Body @{
     voice_key = "zh_male"
@@ -68,17 +69,17 @@ $tts = Invoke-Api -Method POST -Path "/api/chapters/$chapterId/tts" -Body @{
 
 if (-not $tts.ok) { throw "TTS regen failed: $($tts.detail)" }
 
-$chsAfter = Get-ChapterList -ProjectId 49
-$ch8After = $chsAfter | Where-Object { [int]$_.chapter_number -eq 8 } | Select-Object -First 1
-$contentAfter = Get-ChapterContentText $ch8After
+$chsAfter = Get-ChapterList -ProjectId $projectId
+$chapterAfter = $chsAfter | Where-Object { [int]$_.id -eq $chapterId } | Select-Object -First 1
+$contentAfter = Get-ChapterContentText $chapterAfter
 $contentPreserved = ($contentBefore -eq $contentAfter)
 
-$mp3Path = $ch8After.audio_path
+$mp3Path = $chapterAfter.audio_path
 $mp3Ok = (Test-Path $mp3Path) -and ((Get-Item $mp3Path).Length -gt 0)
 
 Add-Line "Content preserved in DB: $contentPreserved"
 Add-Line "MP3 regenerated: $mp3Ok path=$mp3Path"
-Add-Line "TTS status: $($ch8After.tts_status)"
+Add-Line "TTS status: $($chapterAfter.tts_status)"
 Add-Line ""
 
 if (-not $contentPreserved) { throw "chapter.content was modified — must stay raw" }
