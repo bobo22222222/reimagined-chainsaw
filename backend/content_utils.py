@@ -61,8 +61,15 @@ def length_report_meta(text: str, language: str | None, chapter_words: int | Non
 
 
 def get_chapter_content(chapter: dict) -> str:
-    """读取章节正文：优先 content，回退 content_cn（老库）。"""
-    return (chapter.get("content") or chapter.get("content_cn") or "").strip()
+    """读取章节正文：优先 v0.3 content，回退旧库多语言字段。"""
+    return (
+        chapter.get("content")
+        or chapter.get("content_cn")
+        or chapter.get("content_en")
+        or chapter.get("content_es")
+        or chapter.get("content_ja")
+        or ""
+    ).strip()
 
 
 def chapter_has_content(chapter: dict) -> bool:

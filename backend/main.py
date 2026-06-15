@@ -32,6 +32,7 @@ from tts_service import ALLOWED_RATES, VOICE_MAP, generate_tts
 from tts_text_cleaner import clean_text_for_tts
 from validators import (
     assert_urban_generated_content,
+    assert_urban_only,
     assert_urban_project_settings,
     assert_valid_target_words,
     find_content_violations,
@@ -921,7 +922,7 @@ async def _try_chapter_tts(chapter_id: int, voice_key: str, rate: str) -> bool:
 
 def _do_chapter_srt(chapter_id: int) -> dict:
     chapter = get_chapter_or_404(chapter_id)
-    content = chapter.get("content_cn")
+    content = get_chapter_content(chapter)
     if not content:
         raise HTTPException(status_code=400, detail="请先生成本章正文")
     project = get_project_or_404(chapter["project_id"])
@@ -1339,7 +1340,7 @@ async def generate_tts_range(project_id: int, payload: GenerateTtsRangeRequest):
 
     for ch in target_chapters:
         num = ch["chapter_number"]
-        if not (ch.get("content_cn") or "").strip():
+        if not get_chapter_content(ch):
             skipped.append(num)
             continue
         try:

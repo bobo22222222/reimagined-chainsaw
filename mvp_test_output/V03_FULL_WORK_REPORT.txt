@@ -1,0 +1,21 @@
+﻿v0.3 Full Work Production Test Report
+=====================================
+Started:  2026-06-15 20:00:03
+Finished: 2026-06-15 20:52:01
+Overall:  PASS
+
+Lang | ProjectId | Target | Chapters | Content | QC before | QC after | Rewritten | MP3 | ZIP bytes | Min | Result
+-----+-----------+--------+----------+---------+-----------+----------+-----------+-----+-----------+-----+------
+zh   | 26        | 20000  | 10       | 10      | 68.8      | 72.3     | 5         | 10  | 25091493  | 16.7 | PASS
+  ZIP: C:\Users\12834\Documents\Codex\2026-06-13\ai-tts-1-2-readme-md\work\reimagined-chainsaw\mvp_test_output\v03_work_project_26_zh_full.zip
+
+en   | 27        | 10000  | 5        | 5       | 72.4      | 75.4     | 1         | 5   | 20370475  | 11.6 | PASS
+  ZIP: C:\Users\12834\Documents\Codex\2026-06-13\ai-tts-1-2-readme-md\work\reimagined-chainsaw\mvp_test_output\v03_work_project_27_en_full.zip
+
+es   | 28        | 10000  | 5        | 5       | 78        | 82.2     | 2         | 5   | 16460785  | 13.9 | PASS
+  ZIP: C:\Users\12834\Documents\Codex\2026-06-13\ai-tts-1-2-readme-md\work\reimagined-chainsaw\mvp_test_output\v03_work_project_28_es_full.zip
+
+ja   | 29        | 10000  | 5        | 5       | 78.2      | 75.8     | 1         | 5   | 13692546  | 9.9 | PASS
+  ZIP: C:\Users\12834\Documents\Codex\2026-06-13\ai-tts-1-2-readme-md\work\reimagined-chainsaw\mvp_test_output\v03_work_project_29_ja_full.zip
+
+Summary: 4/4 passed

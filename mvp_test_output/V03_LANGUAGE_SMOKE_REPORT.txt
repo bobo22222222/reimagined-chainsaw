@@ -1,0 +1,21 @@
+﻿v0.3 Single-Language Smoke Test Report
+========================================
+Started:  2026-06-15 18:55:34
+Finished: 2026-06-15 19:09:01
+Overall:  PASS
+
+Language | ProjectId | ChapterLen | QualityScore | TTS | ZIP | LangCheck | Retried | ContentField | ProjectLang | Result
+--------+-----------+------------+--------------+-----+-----+-----------+---------+--------------+-------------+------
+zh       | 14        | 3037       | 78           | OK  | OK  | OK        | NO      | OK           | OK          | PASS
+  ZIP: C:\Users\12834\Documents\Codex\2026-06-13\ai-tts-1-2-readme-md\work\reimagined-chainsaw\mvp_test_output\v03_smoke_project_14_zh_full.zip
+
+en       | 15        | 7670       | 79           | OK  | OK  | OK        | NO      | OK           | OK          | PASS
+  ZIP: C:\Users\12834\Documents\Codex\2026-06-13\ai-tts-1-2-readme-md\work\reimagined-chainsaw\mvp_test_output\v03_smoke_project_15_en_full.zip
+
+es       | 16        | 10237      | 84           | OK  | OK  | OK        | NO      | OK           | OK          | PASS
+  ZIP: C:\Users\12834\Documents\Codex\2026-06-13\ai-tts-1-2-readme-md\work\reimagined-chainsaw\mvp_test_output\v03_smoke_project_16_es_full.zip
+
+ja       | 17        | 2267       | 90           | OK  | OK  | OK        | NO      | OK           | OK          | PASS
+  ZIP: C:\Users\12834\Documents\Codex\2026-06-13\ai-tts-1-2-readme-md\work\reimagined-chainsaw\mvp_test_output\v03_smoke_project_17_ja_full.zip
+
+Summary: 4/4 languages passed

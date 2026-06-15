@@ -1,0 +1,36 @@
+﻿v0.3 Language 3-Chapter Extended Test Report
+==============================================
+Started:  2026-06-15 19:09:10
+Finished: 2026-06-15 19:39:49
+Overall:  PASS
+
+Length FAIL only on extreme: zh>5000 | en/es>4000 words | ja>6000 chars
+LengthStatus: OK | WARNING | EXTREME_FAIL (WARNING does not block pipeline)
+
+Lang | ProjectId | Chapters | LengthStatus | QC | Rewrite | TTS | ZIP | LangCheck | Result
+-----+-----------+----------+--------------+----+---------+-----+-----+-----------+------
+zh   | 18        | OK       | OK           | OK | OK      | OK  | OK  | OK        | PASS
+  Lengths: ch1=2759, ch2=2326, ch3=2220
+  QC: ch1=80, ch2=74, ch3=73
+  QualityLength: ch1=2759 汉字 偏长; ch2=2326 汉字 偏长; ch3=2220 汉字 正常
+  ZIP: C:\Users\12834\Documents\Codex\2026-06-13\ai-tts-1-2-readme-md\work\reimagined-chainsaw\mvp_test_output\v03_3ch_project_18_zh_full.zip
+
+en   | 19        | OK       | OK           | OK | OK      | OK  | OK  | OK        | PASS
+  Lengths: ch1=2991, ch2=2614, ch3=2891
+  QC: ch1=82, ch2=82, ch3=78
+  QualityLength: ch1=2991 英文单词 偏长; ch2=2614 英文单词 偏长; ch3=2891 英文单词 偏长
+  ZIP: C:\Users\12834\Documents\Codex\2026-06-13\ai-tts-1-2-readme-md\work\reimagined-chainsaw\mvp_test_output\v03_3ch_project_19_en_full.zip
+
+es   | 20        | OK       | OK           | OK | OK      | OK  | OK  | OK        | PASS
+  Lengths: ch1=2595, ch2=2608, ch3=2182
+  QC: ch1=84, ch2=76, ch3=81
+  QualityLength: ch1=2595 西语单词 偏长; ch2=2608 西语单词 偏长; ch3=2182 西语单词 正常
+  ZIP: C:\Users\12834\Documents\Codex\2026-06-13\ai-tts-1-2-readme-md\work\reimagined-chainsaw\mvp_test_output\v03_3ch_project_20_es_full.zip
+
+ja   | 21        | OK       | OK           | OK | OK      | OK  | OK  | OK        | PASS
+  Lengths: ch1=2560, ch2=4319, ch3=1551
+  QC: ch1=81, ch2=78, ch3=82
+  QualityLength: ch1=2560 日语字符 正常; ch2=4319 日语字符 偏长; ch3=1551 日语字符 偏短
+  ZIP: C:\Users\12834\Documents\Codex\2026-06-13\ai-tts-1-2-readme-md\work\reimagined-chainsaw\mvp_test_output\v03_3ch_project_21_ja_full.zip
+
+Summary: 4/4 languages passed
